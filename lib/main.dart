@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -11,46 +9,49 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Completer<GoogleMapController> _controller = Completer();
+ // static const LatLng _center = const LatLng(45.521563, -122.677433);
 
-  static const LatLng _center = const LatLng(45.521563, -122.677433);
-
-  void _onMapCreated(GoogleMapController controller) {
-    _controller.complete(controller);
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Map CodeSamurai'),
-          backgroundColor: Colors.blueGrey[700],
-        ),
-        body: Stack(
-          children: <Widget>[
-            GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: _center,
-                zoom: 11.0,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: FloatingActionButton(
-                  onPressed: () => print('button pressed'),
-                  materialTapTargetSize: MaterialTapTargetSize.padded,
-                  backgroundColor: Colors.blueGrey[700],
-                  child: const Icon(Icons.map, size: 36.0),
-                ),
-              ),
-            ),
-          ],
-        ),
+        body: Map()
       ),
+    );
+  }
+}
+
+class Map extends StatefulWidget {
+  @override
+  _MapState createState() => _MapState();
+}
+
+class _MapState extends State<Map> {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        GoogleMap(
+//              onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: LatLng(23.811152, 90.4331707),
+            zoom: 15.0,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16,30,16,16),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: FloatingActionButton(
+              onPressed: () => print('button pressed'),
+              materialTapTargetSize: MaterialTapTargetSize.padded,
+              backgroundColor: Colors.blueGrey[700],
+              child: const Icon(Icons.map, size: 36.0),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
