@@ -36,7 +36,7 @@ class _MapState extends State<Map> {
   TextEditingController destinationController = TextEditingController();
 
   final Set<Marker> _markers = {};
-  final Set<Marker> _polyLines = {};
+  final Set<Polyline> _polyLines = {};
 
   @override
   void initState() {
@@ -66,6 +66,7 @@ class _MapState extends State<Map> {
           compassEnabled: true,
           markers: _markers,
           onCameraMove: onCameraMove,
+          polylines: _polyLines,
         ),
         Positioned(
           top: 50.0,
@@ -128,9 +129,9 @@ class _MapState extends State<Map> {
               cursorColor: Colors.black,
               controller: destinationController,
               textInputAction: TextInputAction.go,
-//              onSubmitted: (value) {
-//                appState.sendRequest(value);
-//              },
+              onSubmitted: (value) {
+                 sendRequest(value);
+              },
               decoration: InputDecoration(
                 icon: Container(
                   margin: EdgeInsets.only(left: 20, top: 5),
@@ -176,17 +177,26 @@ class _MapState extends State<Map> {
     });
   }
 
-  void onAddMarkerPressed() {
+  void _addMarker(LatLng location, String address) {
     setState(() {
       _markers.add(Marker(
           markerId: MarkerId(_lastPosition.toString()),
-          position: _lastPosition,
-          infoWindow: InfoWindow(title: 'remember this place', snippet: 'good'),
+          position: location,
+          infoWindow: InfoWindow(title: address, snippet: 'Bus Stop'),
           icon: BitmapDescriptor.defaultMarker));
       print(_markers);
     });
   }
 
+  List<LatLng> _convertToLatLng(List points) {
+    List<LatLng> result = <LatLng>[];
+    for (int i = 0; i < points.length; i++) {
+      if (i % 2 != 0) {
+        result.add(LatLng(points[i - 1], points[i]));
+      }
+    }
+    return result;
+  }
   List _decodePoly(String poly) {
     var list = poly.codeUnits;
     var lList = new List();
@@ -232,4 +242,26 @@ setState(() {
 });
 
   }
+
+  void sendRequest(String intendedLocation) async {
+    List<Placemark> placemark =
+    await Geolocator().placemarkFromAddress(intendedLocation);
+    double latitude = placemark[0].position.latitude;
+    double longitude = placemark[0].position.longitude;
+    LatLng destination = LatLng(latitude, longitude);
+    _addMarker(destination, intendedLocation);
+    String route = await googleMapServices.getRouteCoordinates(
+        _initialPosition, destination);
+    createRoute(route);
+  }
+
+  void createRoute(String encondedPoly) {
+    _polyLines.add(Polyline(
+        polylineId: PolylineId(_lastPosition.toString()),
+        width: 10,
+        visible: true,
+        points: _convertToLatLng(_decodePoly(encondedPoly)),
+        color: Colors.blue));
+  }
+
 }
