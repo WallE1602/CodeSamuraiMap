@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "725493931754",
+    "firebase_url": "https://codesamuraimap.firebaseio.com",
+    "project_id": "codesamuraimap",
+    "storage_bucket": "codesamuraimap.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725493931754:android:2fd7d42467811212778193",
+        "android_client_info": {
+          "package_name": "com.sefatulwasi.mapcodesamurai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "725493931754-32jqihu1n55jotquj2rstcfp3jblvj2r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCX8hHkQ3UWvdtGxwRlg_NyH93YOb3uydA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "725493931754-32jqihu1n55jotquj2rstcfp3jblvj2r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
